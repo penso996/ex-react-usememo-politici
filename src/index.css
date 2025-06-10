@@ -12,6 +12,7 @@
 /* PAGE */
 img {
   height: 200px;
+  border-radius: 5px;
 }
 
 .politician {
