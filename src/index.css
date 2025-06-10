@@ -8,3 +8,15 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+/* PAGE */
+img {
+  height: 200px;
+}
+
+.politician {
+  padding: 10px;
+  margin: 10px;
+  border: solid 2px black;
+  border-radius: 5px;
+}

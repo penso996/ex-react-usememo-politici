@@ -19,9 +19,20 @@ function App() {
     fetchData();
   }, []);
 
+
   // RENDER
   return (
     <>
+      {politician.map(politician => {
+        return (
+          <div className="politician" key={politician.id}>
+            <h3>{politician.name}</h3>
+            <img src={politician.image} alt={politician.name} />
+            <h5>{politician.position}</h5>
+            <p>{politician.biography}</p>
+          </div>
+        )
+      })}
     </>
   )
 }
