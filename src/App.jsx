@@ -1,23 +1,33 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+
+function PoliticianCard({ name, image, position, biography }) {
+  console.log("Card");
+  return (
+    <div className="politician">
+      <h3>{name}</h3>
+      <img src={image} alt={name} />
+      <h5>{position}</h5>
+      <p>{biography}</p>
+    </div>
+  )
+}
+
+const MemoPoliticianCard = React.memo(PoliticianCard);
 
 function App() {
 
-  const [politician, setPoliticians] = useState([]);
+  const [politicians, setPoliticians] = useState([]);
   const [filter, setFilter] = useState("");
 
   // function to fetch politicians data
-  async function fetchData() {
-    try {
-      const response = await fetch('http://localhost:3333/politicians');
-      const data = await response.json();
-      setPoliticians(data);
-      console.log('Dati ricevuti:', data);
-    } catch (error) {
-      console.error('Errore:', error);
-    }
+  function fetchData() {
+    fetch('http://localhost:3333/politicians')
+      .then(res => res.json())
+      .then(data => setPoliticians(data))
+      .catch(error => console.error(error));
   }
 
-  // useEffect to fetch
+  // useEffect to fetch politician data
   useEffect(() => {
     fetchData();
   }, []);
@@ -27,27 +37,28 @@ function App() {
     setFilter(event.target.value)
   }
 
+  // filter politicians
+  const filteredPoliticians = useMemo(() => {
+    return politicians.filter(politician => {
+      const name = politician.name.toLowerCase().includes(filter.toLowerCase());
+      const bio = politician.biography.toLowerCase().includes(filter.toLowerCase());
+      return name || bio;
+    })
+  }, [politicians, filter])
+
 
   // RENDER
   return (
     <>
       <input
         type="text"
-        name="filter"
         value={filter}
         onChange={handleFilterChange}
       />
 
-      {politician.map(politician => {
-        return (
-          <div className="politician" key={politician.id}>
-            <h3>{politician.name}</h3>
-            <img src={politician.image} alt={politician.name} />
-            <h5>{politician.position}</h5>
-            <p>{politician.biography}</p>
-          </div>
-        )
-      })}
+      {filteredPoliticians.map(politician => (
+        <MemoPoliticianCard key={politician.id} {...politician} />
+      ))}
     </>
   )
 }
