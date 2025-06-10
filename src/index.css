@@ -10,14 +10,18 @@
 }
 
 /* PAGE */
-img {
-  height: 200px;
-  border-radius: 5px;
+input {
+  margin: 10px;
 }
 
 .politician {
   padding: 10px;
   margin: 10px;
   border: solid 2px black;
+  border-radius: 5px;
+}
+
+img {
+  height: 200px;
   border-radius: 5px;
 }
